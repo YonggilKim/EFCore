@@ -10,7 +10,6 @@ namespace EFGetStarted
 {
     public class DbCommands
     {
-        // 초기화 시간이 좀 걸림
         public static void InitializeDB(bool forceReset = false)
         {
             using (AppDbContext db = new AppDbContext())
@@ -72,47 +71,24 @@ namespace EFGetStarted
             }
         }
 
-        // 특정 플레이어가 소지한 아이템들의 CreateDate를 수정
-        public static void UpdateDate()
+        public static void ShowItems()
         {
-            Console.WriteLine("Input Player Name");
-            Console.WriteLine("> ");
+            Console.WriteLine("플레이어 이름 입력");
+            Console.WriteLine(" > ");
             string name = Console.ReadLine();
 
             using (var db = new AppDbContext())
             {
-                var items = db.Items.Include(i => i.Owner)
-                            .Where(i => i.Owner.Name == name);
-
-                foreach (Item item in items)
+                foreach (Player Player in db.Players.AsNoTracking().Where(p => p.Name == name).Include(i => i.Items))
                 {
-                    item.CreateDate = DateTime.Now;
+                    foreach (Item item in Player.Items)
+                    {
+                        Console.WriteLine($"{item.TemplateId}");
+                    }
                 }
 
-                db.SaveChanges();
             }
-
-            ReadAll();
         }
 
-        public static void DeleteItem()
-        {
-            Console.WriteLine("Input Player Name");
-            Console.WriteLine("> ");
-            string name = Console.ReadLine();
-
-            using (var db = new AppDbContext())
-            {
-                var items = db.Items.Include(i => i.Owner)
-                            .Where(i => i.Owner.Name == name);
-
-
-                db.Items.RemoveRange(items);
-
-                db.SaveChanges();
-            }
-
-            ReadAll();
-        }
     }
 }
