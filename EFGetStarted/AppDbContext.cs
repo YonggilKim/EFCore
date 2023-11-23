@@ -16,6 +16,7 @@ namespace EFGetStarted
         // Items 이라는 DB 테이블이 있는데, 세부적인 칼럼/키 정보는 Item 클래스를 참고해!
         public DbSet<Item> Items { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Guild> Guilds { get; set; }
         // DB ConnectionString
         // 어떤 DB를 어떻게 연결해라~ (각종 설정, Authorization 등)
         public const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EfCoreDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
