@@ -26,9 +26,10 @@ namespace EFGetStarted
                         DbCommands.InitializeDB(forceReset: true);
                         break;
                     case "1":
-                        DbCommands.UpdateTest();
+                        DbCommands.UpdateByReload();
                         break;
                     case "2":
+                        DbCommands.UpdateByFull();
                         break;
                     case "3":
                         break;

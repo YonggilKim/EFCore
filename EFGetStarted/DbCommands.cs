@@ -66,23 +66,47 @@ namespace EFGetStarted
 
         }
 
-        /// <summary>
-        /// Update 3단계
-        /// Tracked Entity를 얻어온다.
-        /// Entity 클래스의 property를 변경
-        /// SaveChanges 호출
-        /// </summary>
-        /// <param name="db"></param>
-
-        public static void UpdateTest()
+        public static void ShowGuilds()
         {
             using (AppDbContext db = new AppDbContext())
             {
-                var guild = db.Guilds.Single(g => g.GuildName == "T1");
-                guild.GuildName = "DWG";
+                foreach (var guild in db.Guilds.MapGuildDto())
+                {
+                    Console.WriteLine($"GuildId({guild.Name}");
+                }
+            }
+        }
+
+        //
+        public static void UpdateByReload()
+        {
+            //외부에서 수정 원하는 데이터의 ID와 정보를 넘겨줬다고 가정
+            int id = 1;
+            string name = "DWG";
+
+            using (AppDbContext db = new AppDbContext())
+            {
+                Guild guild = db.Find<Guild>(id);
+                guild.GuildName = name;
                 db.SaveChanges();
             }
         }
 
+        public static void UpdateByFull()
+        {
+            // 외부에서 길드의 모든 정보를 다 받았다고 가정
+            Guild guild = GetGuildInfo();
+            using (AppDbContext db = new AppDbContext())
+            {
+                //guild로 넘겨주는데 어떻게 찾음? -> pk로 찾기때문에 괜찮다.
+                db.Guilds.Update(guild);
+                db.SaveChanges();
+            }
+        }
+
+        public static Guild GetGuildInfo()
+        {
+            return new Guild();
+        }
     }
 }
