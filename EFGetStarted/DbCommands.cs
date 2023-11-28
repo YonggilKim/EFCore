@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
+
 
 namespace EFGetStarted
 {
@@ -107,6 +103,24 @@ namespace EFGetStarted
         public static Guild GetGuildInfo()
         {
             return new Guild();
+        }
+
+        public static void Update_1vN()
+        {
+            int id = 1; // 입력받은 Guild
+            using (AppDbContext db = new AppDbContext())
+            {
+                Guild guild = db.Guilds
+                    .Include(g => g.Members)
+                    .Single(g => g.GuildId == id);
+
+                guild.Members = new List<Player>()
+                {
+                    new Player() {Name = "Dopa"}
+                };
+
+                db.SaveChanges();
+            }
         }
     }
 }
